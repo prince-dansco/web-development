@@ -1,43 +1,67 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import Typewriter from "react-typewriter-effect";
+import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Introduction() {
   return (
     <div className="min-h-screen bg-fuchsia-200 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Page Header */}
-        <div className="text-center mb-12">
-          <h1 className="md:text-4xl font-extrabold text-fuchsia-700 text-xl">
-            Introduction to Web Development
-          </h1>
+        <div className="text-center items-center justify-self-center-center mb-12">
+          <Typewriter
+            multiText={[
+              "Introduction to Web Development",
+              "Learn Web Development",
+              "Frontend & Backend",
+              "Start Coding Today",
+            ]}
+            multiTextDelay={1000}
+            typeSpeed={70}
+            eraseSpeed={50}
+            delaySpeed={1500}
+            cursorColor="#a21caf"
+            textStyle={{
+              fontSize: "1.9rem",
+              fontWeight: "800",
+              color: "#a21caf",
+              lineHeight: "1.75rem",
+             alignText: "center"
+            }}
+            wrapperClassName="md:text-4xl font-extrabold justify-self-center text-fuchsia-700 text-xl"
+            loop={true} 
+          />
           <p className="mt-4 text-sm md:text-xl text-gray-600">
-            Learn the basics of web development, its branches, and why it's an essential skill in today's digital world.
+            Learn the basics of web development, its branches, and why it's an
+            essential skill in today's digital world.
           </p>
         </div>
 
-        {/* What is Web Development? */}
+        {/* Rest of your content remains unchanged */}
         <section className="mb-12">
           <h2 className="text-xl md:text-3xl font-bold text-fuchsia-700 mb-4">
             What is Web Development?
           </h2>
           <p className="text-gray-600 leading-relaxed">
-            Web development refers to the process of building, creating, and maintaining websites and web applications. It involves a combination of programming, design, and problem-solving skills to deliver functional and visually appealing web experiences.
+            Web development refers to the process of building, creating, and
+            maintaining websites and web applications. It involves a combination
+            of programming, design, and problem-solving skills to deliver
+            functional and visually appealing web experiences.
           </p>
         </section>
 
-        {/* Branches of Web Development */}
         <section className="mb-12">
           <h2 className="text-xl md:text-3xl font-bold text-fuchsia-600 mb-4 text-center">
             Branches of Web Development
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Frontend Development */}
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h3 className="text-lg md:text-2xl font-bold text-fuchsia-600 mb-2">
                 Frontend Development
               </h3>
               <p className="text-gray-600 mb-4">
-                Frontend development focuses on the user interface (UI) and user experience (UX) of a website. It involves everything that users interact with directly, such as buttons, forms, and layouts.
+                Frontend development focuses on the user interface (UI) and user
+                experience (UX) of a website. It involves everything that users
+                interact with directly, such as buttons, forms, and layouts.
               </p>
               <h4 className="text-base md:text-xl font-semibold text-fuchsia-500 mb-2">
                 Why Learn Frontend Development?
@@ -58,13 +82,14 @@ export default function Introduction() {
               </ul>
             </div>
 
-            {/* Backend Development */}
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h3 className="text-lg md:text-2xl font-bold text-fuchsia-600 mb-2">
                 Backend Development
               </h3>
               <p className="text-gray-600 mb-4">
-                Backend development deals with the server-side of web applications. It involves managing databases, server logic, and ensuring smooth communication between the frontend and backend.
+                Backend development deals with the server-side of web
+                applications. It involves managing databases, server logic, and
+                ensuring smooth communication between the frontend and backend.
               </p>
               <h4 className="text-base md:text-xl font-semibold text-fuchsia-500 mb-2">
                 Why Learn Backend Development?
@@ -88,13 +113,14 @@ export default function Introduction() {
           </div>
         </section>
 
-        {/* Importance of Web Development */}
         <section className="mb-12">
           <h2 className="text-xl md:text-3xl font-bold text-fuchsia-500 mb-4">
             Importance of Web Development
           </h2>
           <p className="text-gray-600 leading-relaxed text-base">
-            Web development is a crucial skill in today's digital age. It powers everything from small personal blogs to large e-commerce platforms. Here are some reasons why web development is important:
+            Web development is a crucial skill in today's digital age. It powers
+            everything from small personal blogs to large e-commerce platforms.
+            Here are some reasons why web development is important:
           </p>
           <ul className="list-disc list-inside text-gray-600 mt-4">
             <li>Enables businesses to establish an online presence.</li>
@@ -104,15 +130,12 @@ export default function Introduction() {
           </ul>
         </section>
 
-        {/* Call to Action */}
         <div className="text-center mt-12">
           <p className="text-xl text-gray-600 mb-4">
             Ready to start your web development journey?
           </p>
           <button className="bg-fuchsia-600 text-white py-3 px-8 rounded-lg hover:bg-fuchsia-700 transition-colors duration-300">
-           <Link to='/courses'>
-            Choose course
-           </Link>
+            <Link to="/courses">Choose course</Link>
           </button>
         </div>
       </div>
