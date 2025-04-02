@@ -1,29 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { superbase } from "../superbaseAuth/superbaseClient";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import CryptoJS from "crypto-js";
+import { superbase } from "../superbaseAuth/superbaseClient";
 
-export default function DashBord() {
+export default function Dashboard() {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-      AOS.init({
-        duration: 800,
-        easing: "ease-out",
-        once: false,
-      });
-    }, []);
+    AOS.init({
+      duration: 800,
+      easing: "ease-out",
+      once: false,
+    });
+  }, []);
 
   useEffect(() => {
     const fetchSession = async () => {
       try {
         const {
           data: { session },
+          error,
         } = await superbase.auth.getSession();
+        if (error) throw error;
         setSession(session);
       } catch (error) {
         console.error("Error fetching session:", error);
@@ -40,8 +45,65 @@ export default function DashBord() {
       setSession(session);
     });
 
-    return () => subscription.unsubscribe();
+    return () => subscription?.unsubscribe();
   }, []);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      setDarkMode(true);
+      document.documentElement.classList.add("dark");
+    } else {
+      setDarkMode(false);
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
+  
+  
+  const toggleTheme = () => {
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    
+    if (newDarkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  };
+  
+
+  const handleLogout = async () => {
+    try {
+      const { error } = await superbase.auth.signOut();
+      if (error) throw error;
+      navigate("/signIn");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+    setIsDropdownOpen(false);
+  };
+
+  const handleDeleteAccount = async () => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete your account? This action cannot be undone."
+      )
+    ) {
+      try {
+        await superbase.auth.signOut();
+        console.log("Account deletion requested");
+        navigate("/");
+      } catch (error) {
+        console.error("Error deleting account:", error);
+      }
+    }
+    setIsDropdownOpen(false);
+  };
 
   if (loading) {
     return (
@@ -66,10 +128,15 @@ export default function DashBord() {
   const avatarUrl =
     user.user_metadata?.avatar_url ||
     user.user_metadata?.picture ||
-    "https://www.gravatar.com/avatar/default?s=200&d=mp";
+    `https://www.gravatar.com/avatar/${
+      user.email ? CryptoJS.MD5(user.email.trim().toLowerCase()) : "default"
+    }?s=200&d=mp`;
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-900 text-white">
+    <div
+    className={`flex flex-col md:flex-row min-h-screen bg-fuchsia-200 dark:bg-gray-900 text-gray-900 dark:text-white`}
+    
+    >
       {/* Mobile Menu Button */}
       <div className="md:hidden flex justify-between items-center p-4 bg-gray-800">
         <button
@@ -100,31 +167,29 @@ export default function DashBord() {
             )}
           </svg>
         </button>
-        <h1 className="text-xl font-bold text-fuchsia-300">Dashboard  <span className="font-bold text-fuchsia-600 ">Fl/EP</span></h1>
-        <div className="w-6"></div> {/* Spacer for alignment */}
+        <h1 className="text-xl font-bold text-fuchsia-300">
+          Dashboard <span className="font-bold text-fuchsia-600">Fl/EP</span>
+        </h1>
+        <div className="w-6"></div>
       </div>
 
-      {/* Left Sidebar - User Profile with Video Background */}
+      {/* Left Sidebar */}
       <aside
         className={`${
           mobileMenuOpen ? "block" : "hidden"
         } md:block w-full md:w-80 fixed md:relative z-20 md:z-0 left-0 top-0 h-full overflow-hidden bg-gray-800 md:bg-transparent`}
-        data-aos="flip-right">
-        {/* Video Background - Hidden on mobile, shown on md and up */}
+        data-aos="flip-right"
+      >
         <video
           autoPlay
           loop
           muted
           className="absolute inset-0 w-full h-full object-cover z-0 opacity-30 hidden md:block"
         >
-          <source
-            src="https://assets.mixkit.co/videos/preview/mixkit-abstract-digital-grid-with-lines-17345-large.mp4"
-            type="video/mp4"
-          />
+          <source src="https://youtu.be/1KBV8M0mpYI" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
-        {/* Content Overlay */}
         <div className="relative z-10 h-full flex flex-col p-4 md:p-8 bg-gradient-to-b from-fuchsia-900/30 to-purple-900/30 md:backdrop-blur-sm">
           <div className="flex flex-col items-center mb-8">
             <img
@@ -168,10 +233,98 @@ export default function DashBord() {
             </Link>
           </nav>
 
-          <div className="mt-auto md:mt-24">
-            <button className="w-full py-2 px-4 bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white rounded-lg shadow hover:shadow-lg transition-all duration-300 hover:opacity-90">
+          <div className="mt-auto md:mt-24 relative">
+            <button
+              onClick={toggleDropdown}
+              className="w-full py-2 px-4 bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white rounded-lg shadow hover:shadow-lg transition-all duration-300 hover:opacity-90 flex justify-between items-center"
+            >
               Account Settings
+              <svg
+                className={`w-4 h-4 ml-2 transition-transform duration-200 ${
+                  isDropdownOpen ? "rotate-180" : ""
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
             </button>
+
+            {isDropdownOpen && (
+              <div className="absolute bottom-full mb-2 w-full bg-gray-700 rounded-lg shadow-lg z-30 overflow-hidden">
+                <button
+                  onClick={toggleTheme}
+                  className="w-full px-4 py-2 text-left text-white hover:bg-fuchsia-600/50 transition-colors duration-200 flex items-center"
+                >
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d={
+                        darkMode
+                          ? "M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                          : "M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                      }
+                    />
+                  </svg>
+                  {darkMode ? "Light Mode" : "Dark Mode"}
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="w-full px-4 py-2 text-left text-white hover:bg-fuchsia-600/50 transition-colors duration-200 flex items-center"
+                >
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                    />
+                  </svg>
+                  Logout
+                </button>
+                <button
+                  onClick={handleDeleteAccount}
+                  className="w-full px-4 py-2 text-left text-red-400 hover:bg-red-600/20 transition-colors duration-200 flex items-center"
+                >
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
+                  Delete My Account
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </aside>
@@ -180,13 +333,17 @@ export default function DashBord() {
       <main className="flex-1 md:ml-4 p-4 md:p-10">
         <div className="max-w-4xl mx-auto">
           {/* Welcome Banner */}
-          <div className="bg-gradient-to-r from-fuchsia-900/80 to-purple-900/80 rounded-2xl p-6 md:p-8 mb-6 md:mb-10 shadow-lg backdrop-blur-sm border border-fuchsia-400/20"
-          data-aos="fade-down-left"
+          <div
+            className="bg-gradient-to-r from-fuchsia-900/80 to-purple-900/80 rounded-2xl p-6 md:p-8 mb-6 md:mb-10 shadow-lg backdrop-blur-sm border border-fuchsia-400/20"
+            data-aos="fade-down-left"
           >
             <h1 className="text-2xl md:text-4xl font-bold mb-4 md:mb-6 text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-300 to-purple-300">
               Welcome, {userName}!
             </h1>
             <p className="text-base md:text-xl leading-relaxed text-fuchsia-100">
+              <span className="text-fuchsia-500 font-bold pr-1">
+                Futurelabs/Enterprise plc
+              </span>
               You've arrived at your ultimate web development learning portal!
               Master both frontend and backend technologies through our
               comprehensive courses, hands-on projects, and expert mentorship.
@@ -203,8 +360,9 @@ export default function DashBord() {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-10"
-          data-aos="fade-up-right"
+          <div
+            className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-10"
+            data-aos="fade-up-right"
           >
             <div className="bg-fuchsia-900/50 p-4 md:p-6 rounded-xl border border-fuchsia-400/20">
               <h3 className="text-fuchsia-300 text-base md:text-lg mb-2">
@@ -227,8 +385,9 @@ export default function DashBord() {
           </div>
 
           {/* Featured Courses */}
-          <div className="bg-gray-800/50 rounded-2xl p-6 md:p-8 shadow-xl border border-fuchsia-400/10"
-          data-aos="zoom-in-down"
+          <div
+            className="bg-gray-800/50 rounded-2xl p-6 md:p-8 shadow-xl border border-fuchsia-400/10"
+            data-aos="zoom-in-down"
           >
             <h2 className="text-xl md:text-2xl font-bold text-fuchsia-300 mb-4 md:mb-6">
               Featured Courses
