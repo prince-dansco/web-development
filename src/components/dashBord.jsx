@@ -61,12 +61,11 @@ export default function Dashboard() {
       document.documentElement.classList.remove("dark");
     }
   }, []);
-  
-  
+
   const toggleTheme = () => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
-    
+
     if (newDarkMode) {
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
@@ -75,7 +74,6 @@ export default function Dashboard() {
       localStorage.setItem("theme", "light");
     }
   };
-  
 
   const handleLogout = async () => {
     try {
@@ -121,6 +119,34 @@ export default function Dashboard() {
     );
   }
 
+  const getAvatarUrl = (user) => {
+    // First try: Google-provided picture (direct from user_metadata)
+    if (user.user_metadata?.picture) {
+      return user.user_metadata.picture;
+    }
+
+    // Second try: Avatar URL from user_metadata
+    if (user.user_metadata?.avatar_url) {
+      return user.user_metadata.avatar_url;
+    }
+
+    // Third try: Supabase auth user's photoURL
+    if (user.identities?.[0]?.identity_data?.avatar_url) {
+      return user.identities[0].identity_data.avatar_url;
+    }
+
+    // Fallback: Gravatar using email
+    if (user.email) {
+      const emailHash = CryptoJS.MD5(
+        user.email.trim().toLowerCase()
+      ).toString();
+      return `https://www.gravatar.com/avatar/${emailHash}?s=200&d=mp`;
+    }
+
+    // Ultimate fallback
+    return "https://www.gravatar.com/avatar/default?s=200&d=mp";
+  };
+
   const user = session.user;
   const userName =
     user.user_metadata?.name || user.email?.split("@")[0] || "User";
@@ -134,8 +160,7 @@ export default function Dashboard() {
 
   return (
     <div
-    className={`flex flex-col md:flex-row min-h-screen bg-fuchsia-200 dark:bg-gray-900 text-gray-900 dark:text-white`}
-    
+      className={`flex flex-col md:flex-row min-h-screen bg-fuchsia-200 dark:bg-gray-900 text-gray-900 dark:text-white`}
     >
       {/* Mobile Menu Button */}
       <div className="md:hidden flex justify-between items-center p-4 bg-gray-800">
@@ -192,8 +217,19 @@ export default function Dashboard() {
 
         <div className="relative z-10 h-full flex flex-col p-4 md:p-8 bg-gradient-to-b from-fuchsia-900/30 to-purple-900/30 md:backdrop-blur-sm">
           <div className="flex flex-col items-center mb-8">
-            <img
+            {/* <img
               src={avatarUrl}
+              alt="profile"
+              className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover mb-4 border-4 border-fuchsia-400/50 shadow-lg transform hover:scale-105 transition-transform duration-300"
+              onError={(e) => {
+                e.target.src =
+                  "https://www.gravatar.com/avatar/default?s=200&d=mp";
+              }}
+            />  */}
+
+            {/*  */}
+            <img
+              src={getAvatarUrl(user)}
               alt="profile"
               className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover mb-4 border-4 border-fuchsia-400/50 shadow-lg transform hover:scale-105 transition-transform duration-300"
               onError={(e) => {
