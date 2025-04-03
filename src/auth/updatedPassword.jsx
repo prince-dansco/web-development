@@ -10,7 +10,6 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { superbase } from "../superbaseAuth/superbaseClient";
 import { Toaster, toast } from "react-hot-toast";
-import { ColorRing } from "react-loader-spinner";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -218,34 +217,23 @@ export default function UpdatedPassword() {
 
           {/* Submit Button */}
           
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-fuchsia-500 text-white py-2 px-4 rounded hover:bg-fuchsia-600 disabled:opacity-75 flex items-center justify-center gap-2"
-          >
-            {isLoading ? (
-              <>
-                <ColorRing
-                  visible={true}
-                  height={24}
-                  width={24}
-                  ariaLabel="color-ring-loading"
-                  wrapperStyle={{}}
-                  wrapperClass="color-ring-wrapper"
-                  colors={[
-                    "#e15b64",
-                    "#f47e60",
-                    "#f8b26a",
-                    "#abbd81",
-                    "#849b87",
-                  ]}
-                />
-                Processing...
-              </>
-            ) : (
-              "Continue"
-            )}
-          </button>
+         
+            {/*  */}
+            <button
+  type="submit"
+  disabled={isLoading}
+  className="w-full bg-fuchsia-500 text-white py-2 px-4 rounded hover:bg-fuchsia-600 disabled:opacity-75 flex items-center justify-center gap-2"
+>
+  {isLoading ? (
+    <>
+      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+      Processing...
+    </>
+  ) : (
+    "Continue"
+  )}
+</button>
+
         </form>
       </div>
 
@@ -265,7 +253,7 @@ export default function UpdatedPassword() {
             </p>
             <button
               onClick={handleCloseModal}
-              className="w-full bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700"
+              className="w-full bg-fuchsia-500 text-white py-2 px-4 rounded hover:bg-fuchsia-700"
             >
               Go to Login
             </button>

@@ -1,8 +1,7 @@
-     
 import { useState, useEffect } from "react";
 import { superbase } from "../superbaseAuth/superbaseClient";
 import { useNavigate, Navigate } from "react-router-dom";
-import { ColorRing } from "react-loader-spinner";
+// import { ColorRing } from "react-loader-spinner";
 
 function Wrapper({ children }) {
   const [authenticated, setAuthenticated] = useState(false);
@@ -16,44 +15,27 @@ function Wrapper({ children }) {
           data: { session },
         } = await superbase.auth.getSession();
 
-        setAuthenticated(!!session); 
+        setAuthenticated(!!session);
       } catch (error) {
         console.error("Error fetching session:", error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
     getSession();
-  }, []); 
-
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  //   render(<ColorRing
-  //     visible={true}
-  //     height="80"
-  //     width="80"
-  //     ariaLabel="color-ring-loading"
-  //     wrapperStyle={{}}
-  //     wrapperClass="color-ring-wrapper"
-  //     colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
-  //     />)
-  // }
-
-
+  }, []);
   if (loading) {
     // Render the spinner while loading
     return (
       <div className="flex justify-center items-center h-screen">
-        <ColorRing
-          visible={true}
-          height={80}
-          width={80}
-          ariaLabel="color-ring-loading"
-          wrapperStyle={{}}
-          wrapperClass="color-ring-wrapper"
-          colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
-        />
+        <div className="relative w-20 h-20">
+          {/* Multi-colored spinner that mimics ColorRing */}
+          <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-fuchsia-500 animate-spin"></div>
+          <div className="absolute inset-0 rounded-full border-4 border-transparent border-r-amber-500 animate-spin animation-delay-100"></div>
+          <div className="absolute inset-0 rounded-full border-4 border-transparent border-b-emerald-500 animate-spin animation-delay-200"></div>
+          <div className="absolute inset-0 rounded-full border-4 border-transparent border-l-rose-500 animate-spin animation-delay-300"></div>
+        </div>
       </div>
     );
   }
@@ -62,7 +44,7 @@ function Wrapper({ children }) {
     return <>{children}</>;
   }
 
-  return <Navigate to="/signIn" replace />; 
+  return <Navigate to="/signIn" replace />;
 }
 
 export default Wrapper;

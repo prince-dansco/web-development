@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "react-hot-toast";
-import { ColorRing } from "react-loader-spinner";
+// import { ColorRing } from "react-loader-spinner";
 
 export default function FooterPage() {
   const {
@@ -110,15 +110,7 @@ export default function FooterPage() {
               >
                 {isSubmitting ? (
                   <>
-                    <ColorRing
-                      visible={true}
-                      height={20}
-                      width={20}
-                      ariaLabel="color-ring-loading"
-                      wrapperStyle={{}}
-                      wrapperClass="mr-2"
-                      colors={["#fff", "#fff", "#fff", "#fff", "#fff"]}
-                    />
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
                     Subscribing...
                   </>
                 ) : (

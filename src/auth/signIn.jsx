@@ -4,7 +4,7 @@ import { FaCircleCheck, FaEye, FaEyeSlash } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { superbase } from "../superbaseAuth/superbaseClient";
 import { Toaster, toast } from "react-hot-toast";
-import { ColorRing } from "react-loader-spinner";
+// import { ColorRing } from "react-loader-spinner";
 import AOS from "aos";
 import "aos/dist/aos.css";
 export default function Login() {
@@ -170,23 +170,9 @@ export default function Login() {
           >
             {isLoading ? (
               <>
-                <ColorRing
-                  visible={true}
-                  height={24}
-                  width={24}
-                  ariaLabel="color-ring-loading"
-                  wrapperStyle={{}}
-                  wrapperClass="color-ring-wrapper"
-                  colors={[
-                    "#e15b64",
-                    "#f47e60",
-                    "#f8b26a",
-                    "#abbd81",
-                    "#849b87",
-                  ]}
-                />
-                Processing...
-              </>
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+              Processing...
+            </>
             ) : (
               "Login"
             )}

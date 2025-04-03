@@ -6,7 +6,7 @@ import { superbase } from "../superbaseAuth/superbaseClient";
 import GoogleApp from "./googleAuth";
 import { Toaster, toast } from "react-hot-toast";
 import { FaArrowLeft } from "react-icons/fa";
-import { ColorRing } from "react-loader-spinner";
+// import { ColorRing } from "react-loader-spinner";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -18,17 +18,14 @@ export default function Register() {
     formState: { errors, isValid },
   } = useForm({ mode: "onChange" });
 
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      easing: "ease-out",
+      once: false,
+    });
+  }, []);
 
-   useEffect(() => {
-        AOS.init({
-          duration: 800,
-          easing: "ease-out",
-          once: false,
-        });
-      }, []);
-
-
-      
   const [isLoading, setIsLoading] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -62,9 +59,7 @@ export default function Register() {
     }
   };
   return (
-    <div className=""
-    data-aos="zoom-in-down"
-    >
+    <div className="" data-aos="zoom-in-down">
       <Toaster position="top-right" reverseOrder={false} />
       <div className="flex justify-center items-center min-h-screen bg-gray-100">
         <form
@@ -237,21 +232,7 @@ export default function Register() {
           >
             {isLoading ? (
               <>
-                <ColorRing
-                  visible={true}
-                  height={24}
-                  width={24}
-                  ariaLabel="color-ring-loading"
-                  wrapperStyle={{}}
-                  wrapperClass="color-ring-wrapper"
-                  colors={[
-                    "#e15b64",
-                    "#f47e60",
-                    "#f8b26a",
-                    "#abbd81",
-                    "#849b87",
-                  ]}
-                />
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
                 Processing...
               </>
             ) : (
