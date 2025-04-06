@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { ColorRing } from "react-loader-spinner";
+// import { ColorRing } from "react-loader-spinner";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -37,15 +37,13 @@ export default function EnrollmentForm() {
     },
   });
 
-
   useEffect(() => {
-          AOS.init({
-            duration: 800,
-            easing: "ease-out",
-            once: false,
-          });
-        }, []);
-
+    AOS.init({
+      duration: 800,
+      easing: "ease-out",
+      once: false,
+    });
+  }, []);
 
   const [track, setTrack] = useState("frontend"); // Consistent with form default
   const [selectedCourses, setSelectedCourses] = useState([]);
@@ -125,9 +123,7 @@ export default function EnrollmentForm() {
     const bundleOption = `${track}-bundle`;
 
     return (
-      <div className="space-y-2"
-      data-aos="zoom-out-left"
-      >
+      <div className="space-y-2" data-aos="zoom-out-left">
         {courses
           .filter(
             (course) => course !== bundleOption && !course.includes("bundle")
@@ -229,14 +225,18 @@ export default function EnrollmentForm() {
 
   if (submitSuccess) {
     return (
-      <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg my-40 text-center"
-       data-aos="zoom-in-down"
+      <div
+        className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg my-40 text-center"
+        data-aos="zoom-in-down"
       >
         <div className="text-fuchsia-500 text-5xl mb-4">✓</div>
         <h2 className="text-2xl font-bold mb-2">Enrollment Successful!</h2>
         <p className="mb-4">
-          Thank you for your enrollment to  <span className="text-bold text-fuchsia-500 text-2xl">Futurelabs/EP plc</span>. We've sent a confirmation to your
-          email.
+          Thank you for your enrollment to{" "}
+          <span className="text-bold text-fuchsia-500 text-2xl">
+            Futurelabs/EP plc
+          </span>
+          . We've sent a confirmation to your email.
         </p>
         <button
           onClick={() => setSubmitSuccess(false)}
@@ -249,8 +249,9 @@ export default function EnrollmentForm() {
   }
   const watchName = watch("name");
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg my-32" 
-     data-aos="fade-down-left"
+    <div
+      className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg my-32"
+      data-aos="fade-down-left"
     >
       <h2 className="text-lg md:text-3xl font-bold text-center mb-6 text-fuchsia-600">
         Course Enrollment Form
@@ -259,7 +260,9 @@ export default function EnrollmentForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Track Selection */}
         <div className="bg-fuchsia-300 p-4 rounded-lg">
-          <h3 className="text-xl font-semibold mb-3 text-fuchsia-600">Select Learning Track</h3>
+          <h3 className="text-xl font-semibold mb-3 text-fuchsia-600">
+            Select Learning Track
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <label className="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer hover:bg-fuchsia-100">
               <input
@@ -270,7 +273,9 @@ export default function EnrollmentForm() {
                 defaultChecked
               />
               <div>
-                <span className="font-medium text-fuchsia-500">Frontend Development</span>
+                <span className="font-medium text-fuchsia-500">
+                  Frontend Development
+                </span>
                 <p className="text-sm text-gray-500">
                   HTML, CSS, JavaScript, React, Next.js
                 </p>
@@ -285,7 +290,9 @@ export default function EnrollmentForm() {
                 className="h-4 w-4 text-fuchsia-600"
               />
               <div>
-                <span className="font-medium text-fuchsia-500">Backend Development</span>
+                <span className="font-medium text-fuchsia-500">
+                  Backend Development
+                </span>
                 <p className="text-sm text-gray-500">
                   Node.js, Express, MongoDB
                 </p>
@@ -300,7 +307,9 @@ export default function EnrollmentForm() {
                 className="h-4 w-4 text-fuchsia-600"
               />
               <div>
-                <span className="font-medium text-fuchsia-500">Full Stack Development</span>
+                <span className="font-medium text-fuchsia-500">
+                  Full Stack Development
+                </span>
                 <p className="text-sm text-gray-500">
                   All Frontend & Backend courses
                 </p>
@@ -313,14 +322,19 @@ export default function EnrollmentForm() {
         </div>
 
         {/* Personal Details */}
-        <div className="bg-fuchsia-300 p-4 rounded-lg"
-         data-aos="fade-down-right"
+        <div
+          className="bg-fuchsia-300 p-4 rounded-lg"
+          data-aos="fade-down-right"
         >
-          <h3 className="text-xl font-semibold mb-3 text-fuchsia-500">Personal Information</h3>
+          <h3 className="text-xl font-semibold mb-3 text-fuchsia-500">
+            Personal Information
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Full Name */}
             <div>
-              <label className="block font-medium mb-1 text-fuchsia-700">Full Name</label>
+              <label className="block font-medium mb-1 text-fuchsia-700">
+                Full Name
+              </label>
               <input
                 {...register("name", { required: "Full Name is required" })}
                 className="w-full border p-2 rounded"
@@ -333,7 +347,9 @@ export default function EnrollmentForm() {
 
             {/* Email */}
             <div>
-              <label className="block font-medium mb-1 text-fuchsia-700">Email</label>
+              <label className="block font-medium mb-1 text-fuchsia-700">
+                Email
+              </label>
               <input
                 type="email"
                 {...register("email", {
@@ -353,7 +369,9 @@ export default function EnrollmentForm() {
 
             {/* Phone Number */}
             <div>
-              <label className="block font-medium mb-1 text-fuchsia-700">Phone Number</label>
+              <label className="block font-medium mb-1 text-fuchsia-700">
+                Phone Number
+              </label>
               <input
                 type="tel"
                 {...register("phone", {
@@ -373,7 +391,9 @@ export default function EnrollmentForm() {
 
             {/* Education Level */}
             <div>
-              <label className="block font-medium mb-1 text-fuchsia-700">Education Level</label>
+              <label className="block font-medium mb-1 text-fuchsia-700">
+                Education Level
+              </label>
               <select
                 {...register("education")}
                 className="w-full border p-2 rounded text-fuchsia-400"
@@ -391,9 +411,7 @@ export default function EnrollmentForm() {
         </div>
 
         {/* Course Selection */}
-        <div className="bg-fuchsia-300 p-4 rounded-lg"
-        data-aos="zoom-in-up"
-        >
+        <div className="bg-fuchsia-300 p-4 rounded-lg" data-aos="zoom-in-up">
           <h3 className="text-xl font-semibold mb-3 text-fuchsia-500">
             Select Courses ({track.toUpperCase()})
           </h3>
@@ -406,8 +424,9 @@ export default function EnrollmentForm() {
 
           {/* Price Summary */}
           {totalPrice > 0 && (
-            <div className="mt-4 p-3 bg-fuchsia-300 rounded-lg"
-            data-aos="zoom-in-up"
+            <div
+              className="mt-4 p-3 bg-fuchsia-300 rounded-lg"
+              data-aos="zoom-in-up"
             >
               <div className="flex justify-between items-center">
                 <span className="font-medium">Total Price:</span>
@@ -430,14 +449,16 @@ export default function EnrollmentForm() {
         </div>
 
         {/* Payment Details */}
-        <div className="bg-fuchsia-300 p-4 rounded-lg"
-        data-aos="zoom-in-up"
-        >
-          <h3 className="text-xl font-semibold mb-3 text-fuchsia-500">Payment Information</h3>
+        <div className="bg-fuchsia-300 p-4 rounded-lg" data-aos="zoom-in-up">
+          <h3 className="text-xl font-semibold mb-3 text-fuchsia-500">
+            Payment Information
+          </h3>
 
           {/* Payment Method */}
           <div className="mb-4">
-            <label className="block font-medium mb-2 text-fuchsia-700">Payment Method</label>
+            <label className="block font-medium mb-2 text-fuchsia-700">
+              Payment Method
+            </label>
             <div className="flex space-x-4 flex-wrap">
               <label className="flex items-center space-x-2">
                 <input
@@ -474,13 +495,13 @@ export default function EnrollmentForm() {
 
           {/* Card Details (shown only if card is selected) */}
           {paymentMethod === "card" && (
-            <div className="space-y-4"
-            data-aos="zoom-in-up"
-            >
+            <div className="space-y-4" data-aos="zoom-in-up">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Card Number */}
                 <div>
-                  <label className="block font-medium mb-1 text-fuchsia-700">Card Number</label>
+                  <label className="block font-medium mb-1 text-fuchsia-700">
+                    Card Number
+                  </label>
                   <input
                     type="text"
                     {...register("cardNumber", {
@@ -548,7 +569,9 @@ export default function EnrollmentForm() {
 
                 {/* CVV */}
                 <div>
-                  <label className="block font-medium mb-1 text-fuchsia-700">CVV</label>
+                  <label className="block font-medium mb-1 text-fuchsia-700">
+                    CVV
+                  </label>
                   <input
                     type="text"
                     {...register("cvv", {
@@ -571,10 +594,10 @@ export default function EnrollmentForm() {
 
           {/* Bank Transfer Details */}
           {paymentMethod === "transfer" && (
-            <div className="bg-fuchsia-300 p-4 rounded-lg"
-            data-aos="fade-left"
-            >
-              <h4 className="font-medium mb-2 text-fuchsia-600">Bank Transfer Instructions</h4>
+            <div className="bg-fuchsia-300 p-4 rounded-lg" data-aos="fade-left">
+              <h4 className="font-medium mb-2 text-fuchsia-600">
+                Bank Transfer Instructions
+              </h4>
               <p className="text-sm mb-2">
                 Please transfer the amount of <strong>${totalPrice}</strong> to:
               </p>
@@ -592,7 +615,7 @@ export default function EnrollmentForm() {
                   <strong>Routing Number:</strong> 987654321
                 </p>
                 <p className="text-fuchsia-500 font-bold">
-                  <strong>Reference:</strong>  {watchName || "Your full name"}
+                  <strong>Reference:</strong> {watchName || "Your full name"}
                 </p>
               </div>
             </div>
@@ -600,8 +623,9 @@ export default function EnrollmentForm() {
 
           {/* PayPal Notice */}
           {paymentMethod === "paypal" && (
-            <div className="bg-yellow-50 p-4 rounded-lg"
-            data-aos="fade-down-left"
+            <div
+              className="bg-yellow-50 p-4 rounded-lg"
+              data-aos="fade-down-left"
             >
               <h4 className="font-medium mb-2">
                 You will be redirected to PayPal after form submission
@@ -644,38 +668,45 @@ export default function EnrollmentForm() {
         </div>
 
         {/* Submit Button */}
+        
+        
         <button
-  type="submit"
-  disabled={isSubmitting || totalPrice === 0}
-  className={`w-full py-3 px-4 rounded font-bold ${
-    isSubmitting || totalPrice === 0
-      ? "bg-fuchsia-400 cursor-not-allowed"
-      : "bg-fuchsia-600 hover:bg-fuchsia-700 text-white"
-  }`}
->
-  {isSubmitting ? (
-    <span className="flex items-center justify-center">
-      <ColorRing
-        visible={true}
-        height={24}
-        width={24}
-        ariaLabel="color-ring-loading"
-        wrapperStyle={{}}
-        wrapperClass="color-ring-wrapper"
-        colors={[
-          "#ffffff",
-          "#ffffff",
-          "#ffffff",
-          "#ffffff",
-          "#ffffff",
-        ]}
-      />
-      <span className="ml-2">Processing...</span>
-    </span>
-  ) : (
-    `Enroll & Pay $${totalPrice}`
-  )}
-</button>
+          type="submit"
+          disabled={isSubmitting || totalPrice === 0}
+          className={`w-full py-3 px-4 rounded font-bold ${
+            isSubmitting || totalPrice === 0
+              ? "bg-fuchsia-400 cursor-not-allowed"
+              : "bg-fuchsia-600 hover:bg-fuchsia-700 text-white"
+          }`}
+        >
+          {isSubmitting ? (
+            <span className="flex items-center justify-center">
+              <svg
+                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              Processing...
+            </span>
+          ) : (
+            `Enroll & Pay $${totalPrice}`
+          )}
+        </button>
       </form>
     </div>
   );

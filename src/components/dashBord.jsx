@@ -120,22 +120,18 @@ export default function Dashboard() {
   }
 
   const getAvatarUrl = (user) => {
-    // First try: Google-provided picture (direct from user_metadata)
     if (user.user_metadata?.picture) {
       return user.user_metadata.picture;
     }
 
-    // Second try: Avatar URL from user_metadata
     if (user.user_metadata?.avatar_url) {
       return user.user_metadata.avatar_url;
     }
 
-    // Third try: Supabase auth user's photoURL
     if (user.identities?.[0]?.identity_data?.avatar_url) {
       return user.identities[0].identity_data.avatar_url;
     }
 
-    // Fallback: Gravatar using email
     if (user.email) {
       const emailHash = CryptoJS.MD5(
         user.email.trim().toLowerCase()
@@ -143,7 +139,6 @@ export default function Dashboard() {
       return `https://www.gravatar.com/avatar/${emailHash}?s=200&d=mp`;
     }
 
-    // Ultimate fallback
     return "https://www.gravatar.com/avatar/default?s=200&d=mp";
   };
 
